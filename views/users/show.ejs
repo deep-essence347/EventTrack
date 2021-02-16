@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheets/cards.css">
+    
+</head>
+
+<body>
+
+<%- include ("../partials/header") %>
+<div class="hero is-medium">
+    <div class="box column is-10 is-offset-1">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-4 is-centered">
+                    <figure class="image">
+                        <img class="is-rounded" src="<%=user.image%>" alt="Profile Image"  style="width: 15rem; height: 15rem;">
+                    </figure>
+                </div>
+                <div class="column">
+                    <div class="columns">
+                        <h1 class="column is-narrow title" style="color: black;"><%= user.firstName+ " " +user.lastName %></h1>
+                        <%if(currentUser._id.equals(user._id)) {%>
+                            <p class="column">
+                                <%if(!user.isVerified) {%>
+                                    <a class="button is-link" href="/<%=user._id%>/verify">Verify</a>
+                                <%} else {%>
+                                    <a class="button is-success">Verified</a>
+                                <%}%>
+                            </p>
+                        <%}%>
+                        
+                    </div>
+                    <br>
+                    <p><label for="email" style="color: #363636; font-size: 1rem; font-weight: 700;">Email: </label><a href="mailto:<%=user.email%>"><u><%=user.email%></u></a></p>
+                    <p><label for="contact" style="color: #363636; font-size: 1rem; font-weight: 700;">Contact No.: </label><%=user.contact_no%></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box column is-10 is-offset-1">
+        <%if(events.length!==0){%>
+            <fieldset class="box subtitle"><legend class="box" style="background-color: grey; color: white">Created Events</legend>
+                <div class="row columns is-multiline">
+                    <% events.forEach(function(event){ %>
+                        <div class="column is-one-third">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="<%=event.image%>" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <p class="title is-4 no-padding"><%=event.name%></p>
+                                            <p class="gap"><span class="title is-6">Type: <a href="/events/category/<%=event.category%>"><u><%=event.category%></u></a></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <span class="title is-6"><%=event.venue%></span>
+                                        <p class="columns is-mobile gap">
+                
+                                            <% if(currentUser && event.author.id.equals(currentUser._id)){%>
+                                                <span class="column is-12 has-text-centered"
+                                               ><a
+                                                 href="/events/<%=event._id%>"
+                                                 class="button is-default is-primary is-rounded viewDetails"
+                                                 >Organized Event : Details</a
+                                               ></span>
+                                           <%} else{%>
+                                               <span class="column is-12 has-text-centered"
+                                               ><a
+                                                 href="/events/<%=event._id%>"
+                                                 class="button is-default is-info is-rounded viewDetails"
+                                                 >More Info / Register </a
+                                               ></span>
+                                           <%}%>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>     
+                </div>
+            </fieldset>
+        <%}%>
+        <%if(user.registeredEvent.length!==0){%>
+            <fieldset class="box subtitle"><legend class="box" style="background-color: grey; color: white">Registered Events</legend>
+                <div class="row columns is-multiline">
+                    <% user.registeredEvent.forEach(function(event){ %>
+                        <div class="column is-one-third">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="<%=event.subImage%>" alt="Image">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="media">
+                                        <div class="media-content">
+                                            <p class="title is-4 no-padding"><%=event.name%></p>
+                                            <p class="gap"><span class="title is-6">Type: <a href="/events/category/<%=event.category%>"><u><%=event.category%></u></a></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <span class="title is-6"><%=event.venue%></span>
+                                        <p class="columns is-mobile gap">
+                
+                                            <% if(currentUser && event.author.id.equals(currentUser._id)){%>
+                                                <span class="column is-12 has-text-centered"
+                                               ><a
+                                                 href="/events/<%=event.id%>"
+                                                 class="button is-default is-primary is-rounded viewDetails"
+                                                 >Organized Event : Details</a
+                                               ></span>
+                                           <%} else{%>
+                                               <span class="column is-12 has-text-centered"
+                                               ><a
+                                                 href="/events/<%=event.id%>"
+                                                 class="button is-default is-info is-rounded viewDetails"
+                                                 >More Info / Register </a
+                                               ></span>
+                                           <%}%>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>     
+                </div>
+            </fieldset>    
+        <%}%>
+    </div>
+</div>
+
+<%- include ("../partials/footer") %>
